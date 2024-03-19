@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>briefcomm.com</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="../static/css/index.css" rel="stylesheet">
+</head>
+
+<body>
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+    <p class="title">
+        BriefComm.
+    </p>
+    <p class="tagline">
+        KEEP THE COMM BRIEF
+    </p>
+
+    <div style="display: flex; margin-bottom: 0px;">
+        <div class="col" style="margin-left: 200px;">
+            Choose an Audio, Video, or Text file to get started.
+        <input name="file" id="fileInput" type="file" style="margin-top: 40px;"/>
+    </div>
+    <div class="container">
+        <div class="vertical-line"></div>
+    </div>
+    <div class="col" style="margin-right: 200px;">
+        ..or paste URL or type the text below.
+        <input type="text" class="textin" placeholder="Type here." style="margin-top: 60px;">
+    </div>
+</div>
+<div style="vertical-align: middle; margin-bottom: 200px;">
+<button class="telegram" id="submit" type="submit" style="margin-left: 730px;" onclick="submitForm()">Submit</button></div>
+</form>
+    <a href="https://t.me/BriefcommBot">
+    <div class="telegram" >
+        <img src="../static/images/tele.jpeg" class="telegramicon">
+        We are also on Telegram
+    </div></a>
+    <div class="info" style="margin-left: 100px; letter-spacing: 2px;">
+        <p class="heading"> BriefComm is for..</p>
+    <p>...EVERYONE who values time and clarity. Whether you're a busy professional trying to stay on top of meetings,
+         a student juggling multiple assignments, or simply someone who prefers bite-sized information, BriefComm simplifies 
+         the way you interact with audio content. With our tagline - keep the comm brief, we emphasize brevity and efficiency,
+          ensuring that your communication stays concise and to the point. 
+          Say goodbye to lengthy recordings and hello to streamlined insights!"</p>
+        <ul>
+            <li>Lecturers: Easily summarize lecture recordings to review key points and concepts.</li>
+            <li>Podcasters: Condense lengthy podcast episodes into concise summaries for listeners who are short on time.</li>
+            <li>Students: Quickly extract important information from educational audio content for studying and revision purposes.</li>
+            <li>Professionals: Summarize business meetings, presentations, and conference calls to capture essential takeaways and action items efficiently.</li>
+            <li>Researchers: Extract key insights from interviews, focus groups, and research discussions to accelerate data analysis and decision-making processes.</li>
+            <li>Content Creators: Condense lengthy video scripts and audio transcripts into brief summaries for social media posts, blog articles, and promotional materials,
+Language Learners, Etc.</li>
+</ul>
+    </div>
+
+    <section>
+        <ul class="navigation">
+            <li onclick="videoselector('../static/video/prototype.mp4')"><img src="../static/images/video1.jpg" height="200px" width="350px"></li>
+            <li></li>
+			<li onclick="videoselector('../static/video/prototype.mp4')"><img src="../static/images/video2.jpg" height="200px" width="350px"></li>
+		</ul>
+
+	</section>
+    <div style="align-items: center; justify-content: center; vertical-align: middle; margin-top: 0; margin-bottom: 300px;">
+    <video id="slider" autoplay loop style="height: 50%; width: 50%; align-items: center; justify-content: center; vertical-align: middle; margin-top: 0;margin-left: 370px;">
+        <source src="../static/video/prototype.mp4" type="video/mp4">
+    </video>
+</div>
+	<script type="text/javascript">
+		function videoselector (videoLink) {
+			document.getElementById('slider').src=videoLink;
+		}
+        
+        function submitForm() {
+            document.getElementById("uploadForm").submit();
+        }
+	</script>
+</body>
+</html>
