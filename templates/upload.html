@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>briefcomm.com</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="../static/css/index.css" rel="stylesheet">
+</head>
+
+<body style="justify-content: center; align-items: center; vertical-align: middle;">
+    <p class="title">
+        BriefComm.
+    </p>
+    <p class="tagline">
+        KEEP THE COMM BRIEF
+    </p>
+
+<form action="/process/<filenam>" method="post" id="myForm">
+    <div style="margin-left: 500px; margin-top: 100px;">
+<div class="optskept">
+    <label for="cat">Choose a category:</label>
+    <select class="opts" name="cat" id="cat" style="max-height: none; height: auto;">
+        <option value="Transcript" {% if not category %}selected{% endif %}>All Categories</option>
+        {% for cat in category %}
+        <option value="{{ cat }}" {% if cat==cat %}selected{% endif %}>{{ cat }}</option>
+        {% endfor %}
+    </select>
+    <label for="lang">Select Language:</label>
+    <select class="opts" name="lang" id="lang" style="max-height: none; height: auto;">
+        <option value="English" {% if not language %}selected{% endif %}>English</option>
+        {% for lang in language %}
+        <option value="{{ lang }}" {% if lang==lang %}selected{% endif %}>{{ lang }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+    <label style="font-weight: 600; font-size: 20px;" for="context">What was this about ?:</label><br>
+    <textarea placeholder="Enter Topic/ Subject/ Etc here..|" id="textarea" name="textarea" rows="4" cols="60"></textarea><br>
+    <label style="font-weight: 600; font-size: 20px;" for="context">Do you want anything to include ?:</label><br>
+    <textarea placeholder="E.g. Homework/ Assignments..|" id="topic" name="topic" rows="4" cols="60"></textarea><br>
+    <label style="font-weight: 600; font-size: 20px;" for="context">Enter Mail:</label><br>
+    <textarea placeholder="Enter your mail here." id="mail" name="mail" rows="4" cols="60"></textarea><br>
+    <p> Note: Every Input area is optional.</p>
+    <input type="submit" value="Submit" class="telegram" id="submitButton">
+</div>
+</form>
+<script>
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+      document.getElementById("submitButton").disabled = true;
+      
+  document.getElementById("submitButton").classList.add("disabled");
+    });
+</script>
+</body>
+</html>
