@@ -1,6 +1,3 @@
-topic = 'some topic'
-
-
 audio_prompts = {
     "lecture": '''Write a summary for a lecture on {topic}. 
     Write in paragraph and highlight important points with bullet points and headings, 
@@ -111,3 +108,5 @@ audio_prompts = {
 
     "presentation": "Provide a brief overview of the presentation, highlighting the main points covered and any key insights presented."
 }
+
+topic = 'some topic'
