@@ -66,7 +66,7 @@ def upload(filenam):
 def process_file(filepath, mail, lang, context='some topic', category='transcript', endft='dates and palces'):
     y = ''
     if not mail:
-        mail = '210303105522@paruluniversity.ac.in'
+        mail = 'cannotaddMail@gmail.com'
 
     for i in app.config['ALLOWED_EXTENSION']:
         if filepath.endswith(i):
