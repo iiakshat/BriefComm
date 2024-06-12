@@ -1,12 +1,17 @@
-from langchain.prompts import PromptTemplate
-from langchain_community.llms import CTransformers
-from langchain.chains.llm import LLMChain
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import Template
 import os
 import logging
+from langchain_groq import ChatGroq
+from langchain_core.prompts import ChatPromptTemplate
+
+
+groq_api_key=os.getenv('GROQ_API_KEY')
+
+llm = ChatGroq(groq_api_key=groq_api_key, model='llama3-8b-8192')
 
 log = logging.getLogger(__name__)
+log.info("Model Loaded Successfully.")
+
     
 def getResponse(transcript, topic, category='transcript',
                 end_feature='date and places'):
@@ -23,15 +28,6 @@ def getResponse(transcript, topic, category='transcript',
     
     category = category.lower() 
 
-    llm = CTransformers(
-    model = "TheBloke/Llama-2-7B-Chat-GGML",
-    model_file = "llama-2-7b-chat.ggmlv3.q2_K.bin",
-    callbacks = [StreamingStdOutCallbackHandler()],
-    config = {'context_length' : 4096, 'max_new_tokens' : 2048}
-    )
-
-    log.info("Model Loaded Successfully.")
-
     cat = ''
     for key in category.split():
         if key in Template.audio_prompts:
@@ -47,23 +43,16 @@ def getResponse(transcript, topic, category='transcript',
             Using this transcript : <</SYS>>''' + '{transcript}[/INST]'
 
     else:
-        template = f'''
-            [INST] <<SYS>>
-            Write a summary for a {category}, {topic}.
-            Write in paragraph and highlight important points with bullet points and headings,
-            In the end, highlight if any {end_feature} is provided. Using this Text : <</SYS>>''' + '{transcript}[/INST]'
+        template=f''' [INST] <<SYS>>  Write in paragraph on {topic} and highlight important points with bullet points and headings,
+            In the end, highlight if any {end_feature} is provided for a {category}. Using this Text : <</SYS>>''' + '{transcript}[/INST]'
         
-    prompt = PromptTemplate(input_variables=['transcript'],
-                            template=template)
-    
+    prompt = ChatPromptTemplate.from_template(template)
     log.debug('Prompt Created.')
-    llm_chain = LLMChain(
-    prompt = prompt,
-    llm = llm
-    )
+
+    llm_chain = prompt | llm
 
     log.debug('Generating Response.')
-    response = llm_chain.invoke(transcript)
+    response = llm_chain.invoke({"transcript":transcript})
 
     log.info('Response Generated.')
     return response
@@ -82,11 +71,11 @@ def save_summary(filename, topic='some topic', category='lecture', end_feature='
                             end_feature=end_feature)
         
         log.info('Writing to {filename}.txt')
-        f.write(RESPONSE['text'])
+        f.write(RESPONSE.content)
 
 def summarize_text(text, topic='The context of transcript', category='transcript', filename='', endft=''):
     log.debug('Reading file.')
-    RESPONSE = getResponse(text, topic=topic, category=category, end_feature=endft)['text']
+    RESPONSE = getResponse(text, topic=topic, category=category, end_feature=endft).content
 
     try:
         log.info('Clearing temporay files.')
@@ -99,4 +88,32 @@ def summarize_text(text, topic='The context of transcript', category='transcript
     return RESPONSE
 
 def delete_temprory_files(filename, folder, ext):
-    os.remove(f'{folder}/{filename}.{ext}')
+    file_ = os.path.join(folder, filename) + ext
+    os.remove(file_)
+
+
+
+query = '''
+A stack is an Abstract Data Type (ADT), commonly used in most
+ programming languages. It isnamedstackas itbehaves likeareal-world
+ stack,forexample–adeckofcardsorapileofplates,etc.
+ • ADT-TheDataTypeisbasicallyatypeofdatathatcanbeusedindifferent
+ computerprogram. Itsignifiesthetypelikeinteger,floatetc,thespacelike
+ integerwilltake4-bytes,characterwilltake1-byteofspaceetc.
+ ADT Stack and its operations:
+ Image source : Google
+• Theabstractdatatypeisspecialkindofdatatype,whosebehavior isdefined
+ byasetofvaluesandsetofoperations.Thekeyword“Abstract”isusedaswe
+ canusethesedatatypes,wecanperformdifferentoperations.Buthowthose
+ operationsareworkingthatistotallyhiddenfromtheuser.TheADTismadeof
+ withprimitivedatatypes,butoperationlogicsarehidden.
+ ADT Stack and its operations:
+• A real-world stack allows operations at one end only. For example, we can 
+place or remove a card or plate from the top of the stack only. Likewise, Stack 
+ADT allows all data operations at one end only. At any given time, we can only 
+access the top element of a stack.
+ • This feature makes it LIFO data structure. LIFO stands for Last-in-first-out. 
+Here, the element which is placed (inserted or added) last, is accessed first. In 
+stack terminology, insertion operation
+'''
+print(summarize_text(query))
