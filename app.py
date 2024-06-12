@@ -1,13 +1,16 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
+import asyncio
 import secrets
 from waitress import serve
 from Speech_to_Text import *
 from Summarizer import summarize_text
-from Sender import send_mail
 from Template import *
 from Translator import *
+
+
+
 
 app = Flask(__name__, static_url_path='/static')
 app.config.from_pyfile("config.cfg")
@@ -40,6 +43,7 @@ async def upload_file():
         folder = os.path.join(app.instance_path, 'temp')
         os.makedirs(folder, exist_ok=True)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        print("File Saved")
         return redirect(url_for('upload', filenam=filename))
     
     else:
@@ -48,17 +52,17 @@ async def upload_file():
 @app.route('/process/<filenam>', methods=['GET', 'POST'])
 def upload(filenam):
     if request.method == 'POST':
-        print(request.form)
         category = request.form['cat']
         context = request.form.get('textarea')
         endft = request.form.get('topic')
         mail = request.form.get('mail')
         lang = request.form.get('lang')
-        print(filenam, context, category, endft, lang)
+        print("Args: ", filename)
         if filenam == '<filenam>':
             filenam = filename
         
         result = process_file(filenam, mail, lang, context, category, endft)
+        print("Processed file.")
         return render_template('final.html', summary=result)
     return render_template('upload.html', category = audio_prompts, language = sorted(LANGUAGES.values()))
 
@@ -90,11 +94,6 @@ def process_file(filepath, mail, lang, context='some topic', category='transcrip
         summary = translates(summary, lang)
     except Exception as e:
         print('Could not translate',e )
-
-    try:
-        send_mail([mail], 'temp', summary)
-    except:
-        pass
 
     return summary
 
