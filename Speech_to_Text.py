@@ -1,9 +1,11 @@
 import os
-import whisper
-from whisper.tokenizer import LANGUAGES
 import logging
 from faster_whisper import WhisperModel
 from dotenv import load_dotenv
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
+# Your code that uses OpenMP or calls libraries using OpenMP
+
 
 
 log = logging.getLogger(__name__)
@@ -18,8 +20,9 @@ def generate_transcript(filepath):
     with open(filename,'rb') as file:
         uploaded_file = file.read()
     
-    model=WhisperModel("tiny")
-    transcription,info=model.transcribe("audio.mp3")
+    model_size="large-v3"
+    model=WhisperModel(model_size, device="cuda", compute_type="float16")
+    transcription,info=model.transcribe("temp/Pursuit Of Happyness Iconic Speech.mp3",beam_size=5)
     print(transcription.text)
     for transcript in transcription:
         print("[%.2fs -> %.2fs] %s" % (transcript.start, transcript.end, transcript.text))
@@ -29,7 +32,7 @@ def generate_transcript(filepath):
     log.debug("Working Folder:", os.path.split(os.path.dirname(__file__))[-1])
     print("Working Folder:", os.path.split(os.path.dirname(__file__))[-1])
 
-    detected_lang = LANGUAGES[result['language']].capitalize()
+    detected_lang = result['language'].capitalize()
     print(detected_lang)
     transcript = result['text']
 
