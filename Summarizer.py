@@ -2,10 +2,10 @@ import Template
 import os
 import logging
 from langchain_groq import ChatGroq
-
+from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
 
-
+load_dotenv()
 groq_api_key=os.getenv('GROQ_API_KEY')
 
 llm = ChatGroq(groq_api_key=groq_api_key, model='llama3-8b-8192')
