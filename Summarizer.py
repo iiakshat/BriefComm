@@ -91,30 +91,3 @@ def summarize_text(text, topic='The context of transcript', category='transcript
 def delete_temprory_files(filename, folder, ext):
     file_ = os.path.join(folder, filename) + ext
     os.remove(file_)
-
-
-
-query = '''
-A stack is an Abstract Data Type (ADT), commonly used in most
- programming languages. It isnamedstackas itbehaves likeareal-world
- stack,forexample–adeckofcardsorapileofplates,etc.
- • ADT-TheDataTypeisbasicallyatypeofdatathatcanbeusedindifferent
- computerprogram. Itsignifiesthetypelikeinteger,floatetc,thespacelike
- integerwilltake4-bytes,characterwilltake1-byteofspaceetc.
- ADT Stack and its operations:
- Image source : Google
-• Theabstractdatatypeisspecialkindofdatatype,whosebehavior isdefined
- byasetofvaluesandsetofoperations.Thekeyword“Abstract”isusedaswe
- canusethesedatatypes,wecanperformdifferentoperations.Buthowthose
- operationsareworkingthatistotallyhiddenfromtheuser.TheADTismadeof
- withprimitivedatatypes,butoperationlogicsarehidden.
- ADT Stack and its operations:
-• A real-world stack allows operations at one end only. For example, we can 
-place or remove a card or plate from the top of the stack only. Likewise, Stack 
-ADT allows all data operations at one end only. At any given time, we can only 
-access the top element of a stack.
- • This feature makes it LIFO data structure. LIFO stands for Last-in-first-out. 
-Here, the element which is placed (inserted or added) last, is accessed first. In 
-stack terminology, insertion operation
-'''
-print(summarize_text(query))
