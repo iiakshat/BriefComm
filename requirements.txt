@@ -4,9 +4,10 @@ Flask==2.2.2
 huggingface-hub==0.20.3
 langchain==0.1.9
 langchain-community==0.0.24
-git+https://github.com/openai/whisper.git
-pandas==1.5.0
+pandas
 pytube==15.0.0
 waitress==3.0.0
 Werkzeug==2.2.2
 langchain-groq
+faster-whisper
+python-dotenv
